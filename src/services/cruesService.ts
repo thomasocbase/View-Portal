@@ -10,8 +10,10 @@ export async function fetchCoordinates(stationId: string) {
         const response = await cruesClient.getCoordinates(stationId);
 
         resultDivContent.html = `
-            <p>Station: ${response.stationName}</p>
-            <p>Coordinates: ${response.coord[0]}, ${response.coord[1]}</p>
+            <p><strong>Station</strong>: ${response.stationName}</p>
+            <p style="font-size: 0.6em;" color="gray">
+                <strong>Coordinates</strong>: ${response.coord[0]}, ${response.coord[1]}
+            </p>
         `;
         resultDivContent.coordinates = response.coord;
     } catch (error) {

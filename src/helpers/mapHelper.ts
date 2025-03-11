@@ -14,5 +14,5 @@ export function updateMap(coords: L.LatLngTuple) {
         map.setView(coords, defaultZoom);
     }
 
-    L.marker(coords).addTo(map).bindPopup('Station location');
+    L.marker(coords).addTo(map).bindPopup(coords.toString());
 }

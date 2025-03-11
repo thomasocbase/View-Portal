@@ -25,8 +25,8 @@ export function renderCoordinates(): void {
     // HTML structure
     const container = document.createElement('section');
     container.innerHTML = `
-        <h2>Locate a Station</h2>
-        <div style="display: flex; gap: 1rem;">
+        <h2>Find a Station</h2>
+        <div style="display: flex; gap: 1rem; align-items: center;">
             <form id="station-dropdown-form">
                 <label for="dropdown">Select a station:</label>
                 <select id="station-dropdown" name="dropdown">
