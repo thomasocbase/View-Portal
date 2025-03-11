@@ -1,4 +1,7 @@
 import * as cruesService from '../services/cruesService';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+import { updateMap } from '../helpers/mapHelper';
 
 export function renderCoordinates(): void {
     const app: HTMLElement | null = document.getElementById('app');
@@ -19,6 +22,7 @@ export function renderCoordinates(): void {
         { value: 'M800001010', label: 'Nantes' },
     ];
 
+    // HTML structure
     const container = document.createElement('section');
     container.innerHTML = `
         <h2>Locate a Station</h2>
@@ -30,30 +34,50 @@ export function renderCoordinates(): void {
                 </select>
                 </form>
             <form id="station-search-form">
+                <span>OR</span>
                 <label for="search">Search by code:</label>
                 <input type="text" id="station-search" name="search">
                 <button type="submit">Search</button>
             </form>
         </div>
         <div id="result"></div>
+        <div id="map" style="width: 100%; height: 300px;"></div>
     `;
     app.appendChild(container);
 
     const dropdown = document.getElementById('station-dropdown');
-    if (dropdown === null) return;
-
     const form = document.getElementById('station-search-form');
-    if (form === null) return;
-
     const resultDiv = document.getElementById('result');
-    if (resultDiv === null) return;
+    if (dropdown === null || form === null || resultDiv === null) return;
 
-    // Fetch default station coordinates
+    // Defaault values
     let stationId: string = dropdownOptions[0].value;
+    let coordinates: L.LatLngTuple = [0, 0];
+
+    // Initial fetch
     (async () => {
         const resultDivContent = await cruesService.fetchCoordinates(stationId);
-        resultDiv.innerHTML = resultDivContent;
+        resultDiv.innerHTML = resultDivContent.html;
+        coordinates = resultDivContent.coordinates as L.LatLngTuple;
+        updateMap(coordinates);
     })();
+
+    // Leaflet map
+    // document.addEventListener('DOMContentLoaded', () => {
+    //     if (Array.isArray(coordinates) && coordinates.length === 2) {
+    //         const map = L.map('map').setView(coordinates, 11);
+
+    //         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    //             attribution: '&copy; OpenStreetMap contributors'
+    //         }).addTo(map);
+
+    //         L.marker(coordinates as L.LatLngTuple)
+    //             .addTo(map)
+    //             .bindPopup('Station location')
+    //     } else {
+    //         console.error('Les coordonnées ne sont pas valides :', coordinates);
+    //     }
+    // });
 
     // Dropdown feature
     dropdown.addEventListener('change', async (event) => {
@@ -64,7 +88,10 @@ export function renderCoordinates(): void {
             <p>Loading...</p>
         `;
         const resultDivContent = await cruesService.fetchCoordinates(stationId);
-        resultDiv.innerHTML = resultDivContent;
+        resultDiv.innerHTML = resultDivContent.html;
+        coordinates = resultDivContent.coordinates as L.LatLngTuple;
+
+        updateMap(coordinates);
     });
 
     // Search feature
@@ -90,7 +117,9 @@ export function renderCoordinates(): void {
 
         // Fetch station coordinates
         const resultDivContent = await cruesService.fetchCoordinates(stationSearchId);
-        resultDiv.innerHTML = resultDivContent;
-    });
+        resultDiv.innerHTML = resultDivContent.html;
+        coordinates = resultDivContent.coordinates as L.LatLngTuple;
 
+        updateMap(coordinates);
+    });
 }

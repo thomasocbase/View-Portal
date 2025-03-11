@@ -1,18 +1,22 @@
 import * as cruesClient from '../clients/cruesClient';
 
 export async function fetchCoordinates(stationId: string) {
-    let resultDivContent: string = '';
+    let resultDivContent: { html: string; coordinates: number[] } = {
+        html: '',
+        coordinates: []
+    };
 
     try {
-        const stationCoordinates = await cruesClient.getCoordinates(stationId);
+        const response = await cruesClient.getCoordinates(stationId);
 
-        resultDivContent = `
-            <p>Station: ${stationCoordinates.stationName}</p>
-            <p>Coordinates: ${stationCoordinates.coord[0]}, ${stationCoordinates.coord[1]}</p>
+        resultDivContent.html = `
+            <p>Station: ${response.stationName}</p>
+            <p>Coordinates: ${response.coord[0]}, ${response.coord[1]}</p>
         `;
+        resultDivContent.coordinates = response.coord;
     } catch (error) {
         console.error('Error locating station: ' + error);
-        resultDivContent = `
+        resultDivContent.html = `
             <p>Error locating station.</p>
         `;
     }
