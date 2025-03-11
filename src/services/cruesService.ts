@@ -1,23 +1,21 @@
-import ky from 'ky';
+import * as cruesClient from '../clients/cruesClient';
 
-const cruesAPI = ky.create({
-    prefixUrl: import.meta.env.VITE_CRUES_API_URL,
-    timeout: 10000,
-    headers: {
-        'Content-Type': 'application/json',
-    },
-});
+export async function fetchCoordinates(stationId: string) {
+    let resultDivContent: string = '';
 
-type StationCoordinates = {
-    stationCode: string;
-    stationName: string;
-    coord: Array<number>;
-};
+    try {
+        const stationCoordinates = await cruesClient.getCoordinates(stationId);
 
-export async function getAllFromOneStation(stationId: string): Promise<any> {
-    return cruesAPI.get("station/" + stationId).json();
-}
+        resultDivContent = `
+            <p>Station: ${stationCoordinates.stationName}</p>
+            <p>Coordinates: ${stationCoordinates.coord[0]}, ${stationCoordinates.coord[1]}</p>
+        `;
+    } catch (error) {
+        console.error('Error locating station: ' + error);
+        resultDivContent = `
+            <p>Error locating station.</p>
+        `;
+    }
 
-export async function getCoordinates(stationId: string): Promise<StationCoordinates> {
-    return cruesAPI.get("station/coord/" + stationId).json();
+    return resultDivContent;
 }
