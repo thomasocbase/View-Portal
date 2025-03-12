@@ -1,4 +1,5 @@
 import * as cruesClient from '../clients/cruesClient';
+import { filterDailyData } from '../helpers/hydroHelper';
 
 export async function fetchCoordinates(stationId: string) {
     let resultDivContent: { html: string; coordinates: number[] } = {
@@ -24,4 +25,13 @@ export async function fetchCoordinates(stationId: string) {
     }
 
     return resultDivContent;
+}
+
+export async function getDailyData(stationId: string) {
+    try {
+        const response = await cruesClient.getAllFromOneStation(stationId);
+        return filterDailyData(response.Serie.ObssHydro);
+    } catch (error) {
+        console.error('Error fetching data: ' + error);
+    }
 }

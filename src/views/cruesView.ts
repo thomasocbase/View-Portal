@@ -1,7 +1,8 @@
 import * as cruesService from '../services/cruesService';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { updateMap } from '../helpers/mapHelper';
+import { updateMap } from '../services/mapService';
+import { updateChart } from '../services/chartService';
 
 export function renderCoordinates(): void {
     const app: HTMLElement | null = document.getElementById('app');
@@ -41,7 +42,11 @@ export function renderCoordinates(): void {
             </form>
         </div>
         <div id="result"></div>
-        <div id="map" style="width: 100%; height: 300px;"></div>
+        <div id="map" style="width: 100%; height: 300px; border-radius: 15px"></div>
+        <div style="width: 100%; height: 300px; margin-block: 25px;">
+            <canvas id="chart" ></canvas>
+            <p><em>Period: last 30 days</em></p>
+        </div>
     `;
     app.appendChild(container);
 
@@ -50,34 +55,18 @@ export function renderCoordinates(): void {
     const resultDiv = document.getElementById('result');
     if (dropdown === null || form === null || resultDiv === null) return;
 
-    // Defaault values
+    // Default values
     let stationId: string = dropdownOptions[0].value;
     let coordinates: L.LatLngTuple = [0, 0];
 
-    // Initial fetch
+    // Initial state
     (async () => {
         const resultDivContent = await cruesService.fetchCoordinates(stationId);
         resultDiv.innerHTML = resultDivContent.html;
         coordinates = resultDivContent.coordinates as L.LatLngTuple;
         updateMap(coordinates);
+        updateChart(stationId);
     })();
-
-    // Leaflet map
-    // document.addEventListener('DOMContentLoaded', () => {
-    //     if (Array.isArray(coordinates) && coordinates.length === 2) {
-    //         const map = L.map('map').setView(coordinates, 11);
-
-    //         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    //             attribution: '&copy; OpenStreetMap contributors'
-    //         }).addTo(map);
-
-    //         L.marker(coordinates as L.LatLngTuple)
-    //             .addTo(map)
-    //             .bindPopup('Station location')
-    //     } else {
-    //         console.error('Les coordonnées ne sont pas valides :', coordinates);
-    //     }
-    // });
 
     // Dropdown feature
     dropdown.addEventListener('change', async (event) => {
@@ -92,6 +81,7 @@ export function renderCoordinates(): void {
         coordinates = resultDivContent.coordinates as L.LatLngTuple;
 
         updateMap(coordinates);
+        updateChart(stationId);
     });
 
     // Search feature
@@ -121,5 +111,6 @@ export function renderCoordinates(): void {
         coordinates = resultDivContent.coordinates as L.LatLngTuple;
 
         updateMap(coordinates);
+        updateChart(stationSearchId);
     });
 }
