@@ -1,6 +1,6 @@
 import L from 'leaflet';
 
-const defaultZoom = 10;
+const defaultZoom = 11;
 let map: L.Map | null = null;
 
 export function updateMap(coords: L.LatLngTuple) {
@@ -14,5 +14,14 @@ export function updateMap(coords: L.LatLngTuple) {
         map.setView(coords, defaultZoom);
     }
 
-    L.marker(coords).addTo(map).bindPopup(coords.toString());
+    const redIcon = L.icon({
+        iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.1/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+    });
+
+    L.marker(coords, {icon: redIcon}).addTo(map).bindPopup(coords.toString());
 }

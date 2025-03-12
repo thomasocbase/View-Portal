@@ -24,7 +24,7 @@ export async function updateChart(stationId: string): Promise<void> {
                         label: 'Hydro level',
                         data: data.map((d) => d.hydroLevel),
                         fill: false,
-                        borderColor: 'rgb(75, 192, 192)',
+                        borderColor: '#f11048',
                         tension: 0.1
                     }]
                 }

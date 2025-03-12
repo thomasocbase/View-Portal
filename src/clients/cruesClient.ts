@@ -21,3 +21,7 @@ export async function getAllFromOneStation(stationId: string): Promise<any> {
 export async function getCoordinates(stationId: string): Promise<StationCoordinates> {
     return cruesAPI.get("station/coord/" + stationId).json();
 }
+
+export async function getAllStations(): Promise<any> {
+    return cruesAPI.get("stations").json();
+}
