@@ -1,13 +1,13 @@
 import L from 'leaflet';
 
-const defaultZoom = 11;
+const defaultZoom = 12;
 let map: L.Map | null = null;
 
 export function updateMap(coords: L.LatLngTuple) {
     if (map === null) {
         map = L.map('map').setView(coords, defaultZoom);
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
             attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
     } else {
