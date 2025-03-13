@@ -52,13 +52,12 @@ h4 {
   max-width: 1280px;
   min-width: 390px;
   margin: 0 auto;
-  padding: 2rem;
   text-align: center;
 }
 
-section {
+/* section {
   width: 750px;
-}
+} */
 
 #search-container {
   display: flex; 
@@ -76,6 +75,7 @@ section {
   gap: 1rem;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 input, select {

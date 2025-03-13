@@ -31,7 +31,7 @@ export const vigicruesTemplate = `
                 <button type="submit">Search</button>
             </form>
             <form id="course-search-form" class="search-item">
-                <label for="search">Search by stream</label>
+                <label for="search">Search by stream <span style="font-size: 0.8rem">(ex: Seine)</span></label>
                 <input type="text" id="stream-search" name="search">
                 <button type="submit">Filter</button>
             </form>
@@ -45,6 +45,6 @@ export const vigicruesTemplate = `
         <div id="map" style="width: 100%; height: 300px;"></div>
         <div style="width: 100%; height: 300px; margin-block: 25px;">
             <canvas id="chart"  style="margin: 0 auto; width: 100%"></canvas>
-            <p><em>Period: last 30 days</em></p>
+            <p><em>Source: vigicrues.gouv.fr - Period: last 30 days</em></p>
         </div>
     `;
