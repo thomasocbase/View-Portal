@@ -14,7 +14,7 @@ const dropdownOptions: DropdownOption[] = [
 ];
 
 export const vigicruesTemplate = `
-        <h2 style="text-transform: uppercase;">VigiCrues</h2>
+        <h1>VigiCrues</h1>
         <div id="search-container">
             <h3>Select a station</h3>
             <form id="station-dropdown-form" class="search-item">
@@ -43,7 +43,7 @@ export const vigicruesTemplate = `
         </div>
         <div id="result"></div>
         <div id="map" style="width: 100%; height: 300px;"></div>
-        <div style="width: 100%; height: 300px; margin-block: 25px;">
+        <div style="width: 100%; height: 390px; margin-block: 25px;">
             <canvas id="chart"  style="margin: 0 auto; width: 100%"></canvas>
             <p><em>Source: vigicrues.gouv.fr - Period: last 30 days</em></p>
         </div>

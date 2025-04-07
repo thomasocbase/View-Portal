@@ -3,7 +3,6 @@ import './style.css';
 
 function main(): void {
   renderCoordinates();
-
 }
 
 main();
